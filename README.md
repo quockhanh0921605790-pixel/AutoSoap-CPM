@@ -7,6 +7,7 @@ Tải cả file NCKH (bao gồm Processing, CAL) upload lên Arduino IDE, mở C
 
 MCU: ESP32-S3-N16R8
 
+
 MODULES đang sử dụng:
 
 Display ST7796 (touch): 1
@@ -20,6 +21,7 @@ Pump: 2
 Adapter AC-DC (5V-5A): 1
 
 Buck converter (output 3.3v): 1
+
 
 
 COMING SOON:
