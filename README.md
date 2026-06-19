@@ -1,11 +1,11 @@
 # AutoSoap-CPM
-NCKH-2025
+[NCKH-2025]
 
 Code hiện tại chỉ có CALCULATOR tính toán, Processing mode. INTRO sẽ add sớm.
 
 Tải cả file NCKH (bao gồm Processing, CAL) upload lên Arduino IDE, mở CAL.ino và compile.
 
-MCU: ESP32-S3-N16R8
+[MCU: ESP32-S3-N16R8]
 
 
 MODULES đang sử dụng:
