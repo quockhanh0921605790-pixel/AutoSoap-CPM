@@ -1,4 +1,4 @@
-#include "HX711.h" \
+#include "HX711.h"
 #define PUMPWATER_PIN 2 
 #define PUMPOIL_PIN 3 
 #define HX_DT 4 
