@@ -20,16 +20,18 @@ Pump: 2
 
 Adapter AC-DC (5V-5A): 1
 
-Buck converter (output 3.3v): 1
+Buck (output 3.3v): 1
+
+L9110S: 1
+
+ULN2003-v2 (driver uln2003a): 1
 
 
-
+----------------------------------
 COMING SOON:
 
 INTRO
 
-STEPPER DRIVER ULN2003-v2: 1
+MP3-TF-16P
 
-Motor Driver: 1
-
-Stepper motor: 1
+TP442: 1
