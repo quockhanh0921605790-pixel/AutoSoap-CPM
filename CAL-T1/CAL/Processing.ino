@@ -1,8 +1,28 @@
 #include "HX711.h"
-#define PUMPWATER_PIN 2 
-#define PUMPOIL_PIN 3 
+#include <Stepper.h>
+#define PUMPWATER_PIN 40 
+#define PUMPOIL_PIN 41 
 #define HX_DT 4 
-#define HX_SCK 5 
+#define HX_SCK 5
+
+#define MOTOR_A1 39
+#define MOTOR_A2 45
+
+#define IN1 35
+#define IN2 36
+#define IN3 37
+#define IN4 38
+
+const int STEPS_PER_REV = 2048;
+Stepper mixerMotor(
+  STEPS_PER_REV,
+  IN1,
+  IN3,
+  IN2,
+  IN4
+);
+
+bool mixingStarted = false;
 
 void enterProcessing() { 
 currentMode = MODE_PROCESSING; 
@@ -25,20 +45,32 @@ tft.drawString( "NaOH : -", 250, 160, 2 );
 // ================= PUMPS ================= 
 waterAdded = false; 
 actualWaterWeight = 0.0; 
+naohAdded = false; //stepper
+actualNaOHWeight = 0.0; //stepper
+oilAdded = false;
+actualOilWeight = 0.0;
 // reset cân với cylinder đang đặt sẵn 
 scale.tare(); 
 // chỉ bật pump nước 
 digitalWrite(PUMPWATER_PIN, HIGH); 
 digitalWrite(PUMPOIL_PIN, LOW); 
+// motor DC quay
+digitalWrite(MOTOR_A1, HIGH);
+digitalWrite(MOTOR_A2, LOW);
 // ================= STATUS ================= 
 tft.setTextColor(TFT_GREEN); 
 tft.drawString( "Pump Water: ON", 20, 220, 2 ); 
 tft.setTextColor(TFT_RED); 
 tft.drawString( "Pump Oil: OFF", 20, 245, 2 ); 
+tft.setTextColor(TFT_BLUE);
+tft.drawString("Mixer Motor: ON", 250, 280, 2);
 // ================= WEIGHT ================= 
 tft.setTextColor(TFT_BLUE); 
 tft.drawString( "Current Weight:", 250, 220, 2 ); 
 tft.drawString( "0.0 g", 250, 245, 4 ); 
+// ================= STEPPER MOTOR ===================
+mixingStarted = false;
+mixerMotor.setSpeed(12);
 } 
 
 void processingLoop() { 
@@ -87,6 +119,20 @@ void processingLoop() {
       Serial.println(" g");
 
       Serial.println("Adding NaOH, start mixing");
+      if(!mixingStarted)
+      {
+          mixingStarted = true;
+
+          Serial.println("Mixing...");
+
+          // quay 180 độ
+          for(int i = 0; i < 1024; i++)
+            {
+              mixerMotor.step(1);
+            }
+
+        Serial.println("Mixing finished");
+      }
 
       // cập nhật trạng thái pump
       tft.fillRect(20, 220, 180, 25, TFT_WHITE);
@@ -96,6 +142,26 @@ void processingLoop() {
         "Pump Water: OFF",
         20,
         220,
+        2
+      );
+
+      tft.fillRect(
+        20,
+        245,
+        180,
+        20,
+        TFT_WHITE
+      );
+
+      tft.setTextColor(
+        TFT_GREEN,
+        TFT_WHITE
+      );
+
+      tft.drawString(
+        "Pump Oil: ON",
+        20,
+        245,
         2
       );
 
@@ -128,6 +194,196 @@ void processingLoop() {
       tft.drawString(
         "Adding NaOH...",
         20,
+        280,
+        2
+      );
+    }
+
+    // ================= NaOH CONTROL =================
+    if(waterAdded &&
+      mixingStarted &&
+      !naohAdded &&
+      currentWeight >= actualWaterWeight + naohValue)
+    {
+      naohAdded = true;
+
+      actualNaOHWeight =
+        currentWeight - actualWaterWeight;
+
+      Serial.print("Actual NaOH = ");
+      Serial.print(actualNaOHWeight,1);
+      Serial.println(" g");
+
+      Serial.println("NaOH completed");
+
+      delay(500);   // giống code mẫu
+
+      // quay về 0 độ
+      Serial.println("Returning mixer...");
+      Serial.println("Start step back");
+
+      for(int i=0;i<1024;i++)
+      {
+          mixerMotor.step(-1);
+      }
+      Serial.println("End step back");
+      Serial.println("Mixer returned");
+      Serial.println("Adding Waste Oil");
+      digitalWrite(PUMPOIL_PIN, HIGH);
+
+      // cập nhật Actual Measure
+      tft.fillRect(
+        250,
+        160,
+        220,
+        20,
+        TFT_WHITE
+      );
+
+      tft.setTextColor(
+        TFT_DARKGREEN,
+        TFT_WHITE
+      );
+
+      tft.drawString(
+        "NaOH : " +
+        String(actualNaOHWeight,1) +
+        " g",
+        250,
+        160,
+        2
+      );
+
+      // cập nhật trạng thái
+      tft.fillRect(
+        20,
+        280,
+        220,
+        25,
+        TFT_WHITE
+      );
+
+      tft.setTextColor(
+        TFT_DARKGREEN,
+        TFT_WHITE
+      );
+
+      tft.drawString(
+        "NaOH Completed",
+        20,
+        280,
+        2
+      );
+    }
+
+    // ================= OIL CONTROL =================
+    if(naohAdded &&
+      !oilAdded &&
+      currentWeight >= actualWaterWeight +
+                        actualNaOHWeight +
+                        oilValue)
+    {
+        oilAdded = true;
+
+        digitalWrite(PUMPOIL_PIN, LOW);
+
+        actualOilWeight =
+          currentWeight
+          - actualWaterWeight
+          - actualNaOHWeight;
+
+        Serial.print("Actual Oil = ");
+        Serial.print(actualOilWeight,1);
+        Serial.println(" g");
+
+        Serial.println("Oil completed");
+
+        // cập nhật Actual Measure
+        tft.fillRect(
+          250,
+          80,
+          220,
+          20,
+          TFT_WHITE
+        );
+
+        tft.setTextColor(
+          TFT_DARKGREEN,
+          TFT_WHITE
+        );
+
+        tft.drawString(
+          "Oil : " +
+          String(actualOilWeight,1) +
+          " g",
+          250,
+          80,
+          2
+        );
+
+        // cập nhật trạng thái Pump Oil
+        tft.fillRect(
+          20,
+          245,
+          180,
+          20,
+          TFT_WHITE
+        );
+
+        tft.setTextColor(
+          TFT_RED,
+          TFT_WHITE
+        );
+
+        tft.drawString(
+          "Pump Oil: OFF",
+          20,
+          245,
+          2
+        );
+
+        // thông báo hoàn thành
+        tft.fillRect(
+          20,
+          280,
+          220,
+          25,
+          TFT_WHITE
+        );
+
+        tft.setTextColor(
+          TFT_DARKGREEN,
+          TFT_WHITE
+        );
+
+        tft.drawString(
+          "Oil Completed",
+          20,
+          280,
+          2
+        );
+      delay(5000);
+      // update motor stat
+      tft.fillRect(
+        20,
+        270,
+        220,
+        25,
+        TFT_WHITE
+      );
+
+      tft.setTextColor(
+        TFT_RED,
+        TFT_WHITE
+      );
+
+      // tắt motor DC
+      digitalWrite(MOTOR_A1, LOW);
+      digitalWrite(MOTOR_A2, LOW);
+
+      tft.drawString(
+        "Mixer Motor: OFF",
+        250,
         280,
         2
       );

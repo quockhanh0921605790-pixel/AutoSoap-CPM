@@ -9,8 +9,11 @@
 #define BORDER_COLOR  0x8410   // gray
 #define TEXT_COLOR    TFT_BLACK
 
-#define PUMPWATER_PIN   2
-#define PUMPOIL_PIN 3
+#define MOTOR_A1 39
+#define MOTOR_A2 45
+
+#define PUMPWATER_PIN   40
+#define PUMPOIL_PIN 41
 
 #define HX_DT   4
 #define HX_SCK  5
@@ -32,9 +35,12 @@ float soapValue  = 0.0;
 float waterValue = 0.0;
 float naohValue  = 0.0;
 float oilValue   = 0.0;
-
 float actualWaterWeight = 0.0;
+float actualNaOHWeight = 0.0;
+float actualOilWeight = 0.0;
 
+bool oilAdded = false;
+bool naohAdded = false;
 bool inputError = false;
 bool calculated = false;
 
@@ -256,6 +262,12 @@ void setup() {
   pinMode(PUMPWATER_PIN, OUTPUT);
   pinMode(PUMPOIL_PIN, OUTPUT);
 
+  pinMode(MOTOR_A1, OUTPUT);
+  pinMode(MOTOR_A2, OUTPUT);
+
+  digitalWrite(MOTOR_A1, LOW);
+  digitalWrite(MOTOR_A2, LOW);
+
   digitalWrite(PUMPWATER_PIN, LOW);
   digitalWrite(PUMPOIL_PIN, LOW);
 
@@ -272,7 +284,7 @@ void setup() {
   drawUI();
 
   scale.begin(HX_DT, HX_SCK);
-  scale.set_scale(-403.0);  //CALIBRATION
+  scale.set_scale(-402.9);  //CALIBRATION
   scale.tare();
 
   Serial.println("HX711 READY");
