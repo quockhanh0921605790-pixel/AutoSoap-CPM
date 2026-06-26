@@ -26,12 +26,13 @@ L9110S: 1
 
 ULN2003-v2 (driver uln2003a): 1
 
+TP442: 1
+
+MP3: 1
 
 ----------------------------------
 COMING SOON:
 
-INTRO
+SERVO CONTROL
 
-MP3-TF-16P
-
-TP442: 1
+NaOH valve
