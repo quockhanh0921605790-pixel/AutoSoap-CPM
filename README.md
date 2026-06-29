@@ -26,13 +26,11 @@ L9110S: 1
 
 ULN2003-v2 (driver uln2003a): 1
 
-TP442: 1
+SERVO: 2
 
 MP3: 1
 
 ----------------------------------
 COMING SOON:
 
-SERVO CONTROL
-
-NaOH valve
+TP223 (VALVE DETECET)
