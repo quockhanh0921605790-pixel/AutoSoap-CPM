@@ -30,9 +30,10 @@ SERVO: 2
 
 MP3: 1
 
+HDT11: 1
 ----------------------------------
 COMING SOON:
 
 POST-PROCESSING
 
-DHT11
+[ALL MODULES COMPLETED]
