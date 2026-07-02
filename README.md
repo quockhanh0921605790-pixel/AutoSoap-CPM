@@ -1,7 +1,7 @@
 # AutoSoap-CPM (COLD PROCESS MACHINE)
 [NCKH-2025]
 
-Code hiện tại chỉ có CALCULATOR tính toán, Processing mode. INTRO sẽ add sớm.
+Code gần hoàn thiện. PROGRESS: ============### [80%]
 
 Tải cả file NCKH (bao gồm Processing, CAL) upload lên Arduino IDE, mở CAL.ino và compile.
 
@@ -33,4 +33,6 @@ MP3: 1
 ----------------------------------
 COMING SOON:
 
-TP223 (VALVE DETECET)
+POST-PROCESSING
+
+DHT11
