@@ -8,7 +8,7 @@ Tải cả file NCKH (bao gồm Processing, CAL) upload lên Arduino IDE, mở C
 [MCU: ESP32-S3-N16R8]
 
 
-MODULES đang sử dụng:
+MODULES đang sử dụng: [ALL MODULES COMPLETED]
 
 Display ST7796 (touch): 1
 
@@ -32,9 +32,9 @@ MP3: 1
 
 HDT11: 1
 
+PUSH button (NaOH home gate): 1
+
 ----------------------------------
 COMING SOON:
 
 POST-PROCESSING
-
-[ALL MODULES COMPLETED]
