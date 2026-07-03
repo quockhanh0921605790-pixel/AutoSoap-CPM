@@ -1,7 +1,7 @@
 # AutoSoap-CPM (COLD PROCESS MACHINE)
 [NCKH-2025]
 
-Code gần hoàn thiện. PROGRESS: ============### [80%]
+Code gần hoàn thiện. Tiến độ: ============### [80%]
 
 Tải cả file NCKH (bao gồm Processing, CAL) upload lên Arduino IDE, mở CAL.ino và compile.
 
