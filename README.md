@@ -1,14 +1,14 @@
 # AutoSoap-CPM (COLD PROCESS MACHINE)
 [NCKH-2025]
 
-Code gần hoàn thiện. Tiến độ: ============### [80%]
+Code gần hoàn thiện. Tiến độ: ======#### [60%]
 
-Tải cả file NCKH (bao gồm Processing, CAL) upload lên Arduino IDE, mở CAL.ino và compile.
+Tải cả file NCKH (bao gồm Processing, CAL, PostProcessing) upload lên Arduino IDE, mở CAL.ino và compile.
 
 [MCU: ESP32-S3-N16R8]
 
 
-MODULES đang sử dụng: [ALL MODULES COMPLETED]
+MODULES đang sử dụng: [CODE TẤT CẢ MODULE HOÀN THIỆN]
 
 Display ST7796 (touch): 1
 
@@ -35,6 +35,6 @@ HDT11: 1
 PUSH button (NaOH home gate): 1
 
 ----------------------------------
-COMING SOON:
+CODE SẮP TỚI:
 
-POST-PROCESSING
+CHẾ ĐỘ POST-PROCESSING
