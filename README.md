@@ -1,4 +1,4 @@
-# AutoSoap-CPM (COLD PROCESS MACHINE)
+# AutoSoap-CPM (COLD PROCESS METHOD)
 [NCKH-2026]
 
 Code gần hoàn thiện. Tiến độ: ========== [100%]
